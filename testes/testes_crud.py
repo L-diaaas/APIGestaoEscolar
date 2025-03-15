@@ -1,7 +1,7 @@
 import requests
 import unittest
 
-BASE_URL = ""  #URL DA API
+BASE_URL = " http://127.0.0.1:5000/alunos"  #URL DA API
 
 class TestAlunosAPI(unittest.TestCase):
     def test001_criar_aluno(self):

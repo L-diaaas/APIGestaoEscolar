@@ -41,7 +41,7 @@ class TestAlunosAPI(unittest.TestCase):
         response = requests.delete(f"{BASE_URL}/{aluno_id}")
         self.assertEqual(response.status_code, 204)
 
-    def test005_criar_aluno_com_numero_no_nome(self):
+    def test006_criar_aluno_com_numero_no_nome(self):
         novo_aluno = {
             "nome": 12345,  # Número no lugar de string
             "idade": 16,
@@ -54,18 +54,18 @@ class TestAlunosAPI(unittest.TestCase):
         response = requests.post(BASE_URL, json=novo_aluno)
         self.assertEqual(response.status_code, 400)  # requisição inválida
 
-    def test006_obter_aluno_nao_existente(self):
+    def test007_obter_aluno_nao_existente(self):
         aluno_id = 9999  # ID que não existe
         response = requests.get(f"{BASE_URL}/{aluno_id}")
         self.assertEqual(response.status_code, 404)  #  "não encontrado"
 
-    def test007_atualizar_aluno_nao_existente(self):
+    def test008_atualizar_aluno_nao_existente(self):
         aluno_id = 9999  # ID que não existe
         dados_atualizados = {"nome": "Aluno Inexistente", "idade": 17}
         response = requests.put(f"{BASE_URL}/{aluno_id}", json=dados_atualizados)
         self.assertEqual(response.status_code, 404)  #  "não encontrado"
 
-    def test008_excluir_aluno_nao_existente(self):
+    def test009_excluir_aluno_nao_existente(self):
         aluno_id = 9999  # ID que não existe
         response = requests.delete(f"{BASE_URL}/{aluno_id}")
         self.assertEqual(response.status_code, 404)  #  "não encontrado"

@@ -5,7 +5,6 @@ app = Flask(__name__)
 alunos = [] #Lista para armazenar alunos
 aluno_id_controle = 1 #Controle de unicidade
 
-
 #Adiciona um aluno
 @app.route("/alunos", methods=["POST"])
 def create_alunos():
@@ -36,7 +35,7 @@ def get_alunos():
 def get_alunosID(aluno_id):
     aluno = next((a for a in alunos if a["id"] == aluno_id), None)
     if not aluno:
-        return jsonify({"message": "Aluno não encontrado."}), 404
+        return jsonify({"message": "Aluno não encontrado."}), 200
     return jsonify(aluno)
 
 # Rota para atualizar os alunos existentes:
@@ -56,32 +55,6 @@ def update_aluno(aluno_id):
     aluno["nota_segundo_semestre"] = float(data.get("nota_segundo_semestre", aluno["nota_segundo_semestre"]))
     aluno["media_final"] = float(data.get("media_final", aluno["media_final"]))
     return jsonify({"message": "Aluno atualizado com sucesso!", "aluno": aluno})
-
-@app.route("/alunos/<int:aluno_id>", methods=["PATCH"])
-def patch_aluno(aluno_id):
-    aluno = next((a for a in alunos if a["id"] == aluno_id), None)
-    if not aluno:
-        return jsonify({"message": "Aluno não encontrado."}), 404
-    
-    data = request.get_json()
-    
-    if "nome" in data:
-        aluno["nome"] = data["nome"]
-    if "idade" in data:
-        aluno["idade"] = int(data["idade"])
-    if "turma_id" in data:
-        aluno["turma_id"] = data["turma_id"]
-    if "data_nascimento" in data:
-        aluno["data_nascimento"] = data["data_nascimento"]
-    if "nota_primeiro_semestre" in data:
-        aluno["nota_primeiro_semestre"] = float(data["nota_primeiro_semestre"])
-    if "nota_segundo_semestre" in data:
-        aluno["nota_segundo_semestre"] = float(data["nota_segundo_semestre"])
-    if "media_final" in data:
-        aluno["media_final"] = float(data["media_final"])
-        
-    return jsonify({"message": "Aluno atualizado parcialmente!", "aluno": aluno})
-   
 
 @app.route("/alunos/<int:aluno_id>", methods=["DELETE"])
 def delete_aluno(aluno_id):

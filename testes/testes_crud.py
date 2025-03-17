@@ -1,7 +1,7 @@
 import requests
 import unittest
 
-BASE_URL = " http://127.0.0.1:5000/alunos"  #URL DA API
+BASE_URL = "http://127.0.0.1:5000/alunos"  #URL DA API
 
 class TestAlunosAPI(unittest.TestCase):
     def test001_criar_aluno(self):
@@ -16,7 +16,7 @@ class TestAlunosAPI(unittest.TestCase):
         }
         response = requests.post(BASE_URL, json=novo_aluno)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json()["nome"], "João Silva")
+        self.assertEqual(response.json(), novo_aluno)
 
     def test002_obter_alunos(self):
         response = requests.get(BASE_URL)
@@ -27,14 +27,14 @@ class TestAlunosAPI(unittest.TestCase):
         aluno_id = 1  # Substitua por um ID existente
         response = requests.get(f"{BASE_URL}/{aluno_id}")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("nome", response.json())
+        self.assertIn(aluno_id, response.json())
 
     def test004_atualizar_aluno(self):
         aluno_id = 1  # Substitua por um ID existente
         dados_atualizados = {"nome": "João Pedro Silva", "idade": 17}
         response = requests.put(f"{BASE_URL}/{aluno_id}", json=dados_atualizados)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["nome"], "João Pedro Silva")
+        self.assertEqual(response.json(), aluno_id)
 
     def test005_excluir_aluno(self):
         aluno_id = 1  # Substitua por um ID existente

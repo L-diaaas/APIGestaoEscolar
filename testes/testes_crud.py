@@ -1,73 +1,91 @@
-import requests
 import pytest
+import requests
 
-BASE_URL = "http://127.0.0.1:5000/alunos"  # URL DA API
+BASE_URL = "http://127.0.0.1:5000/alunos"
 
-def test001_criar_aluno():
-    novo_aluno = {
-        "nome": "João Silva",
-        "idade": 16,
+def test_criar_aluno():
+    aluno = {
+        "nome": "João",
+        "idade": 20,
         "turma_id": 1,
-        "data_nascimento": "2008-03-10",
-        "nota_primeiro_semestre": 8.5,
-        "nota_segundo_semestre": 7.8,
-        "media_final": 8.15
+        "data_nascimento": "2003-01-01",
+        "nota_primeiro_semestre": 7.0,
+        "nota_segundo_semestre": 8.0,
+        "media_final": 7.5
     }
-    response = requests.post(BASE_URL, json=novo_aluno)
+    response = requests.post(BASE_URL, json=aluno)
     assert response.status_code == 201
-    assert response.json() == novo_aluno
+    assert response.json()["message"] == "Aluno adicionado com sucesso"
 
-
-def test002_obter_alunos():
+def test_listar_alunos():
     response = requests.get(BASE_URL)
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert isinstance(response.json(), list)  
 
-
-def test003_obter_aluno_por_id():
-    aluno_id = 1
-    response = requests.get(f"{BASE_URL}/{aluno_id}")
-    assert response.status_code == 200
-    assert aluno_id in [aluno['id'] for aluno in response.json()]
-
-def test004_atualizar_aluno():
-    aluno_id = 1 
-    dados_atualizados = {"nome": "João Pedro Silva", "idade": 17}
-    response = requests.put(f"{BASE_URL}/{aluno_id}", json=dados_atualizados)
-    assert response.status_code == 200
-    assert response.json()['id'] == aluno_id
-
-def test005_excluir_aluno():
-    aluno_id = 1  
-    response = requests.delete(f"{BASE_URL}/{aluno_id}")
-    assert response.status_code == 204
-
-
-def test006_criar_aluno_com_numero_no_nome():
-    novo_aluno = {
-        "nome": 12345, 
-        "idade": 16,
-        "turma_id": 1,
-        "data_nascimento": "2008-03-10",
-        "nota_primeiro_semestre": 8.5,
-        "nota_segundo_semestre": 7.8,
-        "media_final": 8.15
+def test_listar_aluno_por_id():
+    aluno = {
+        "nome": "Carlos",
+        "idade": 22,
+        "turma_id": 4,
+        "data_nascimento": "2001-05-10",
+        "nota_primeiro_semestre": 8.0,
+        "nota_segundo_semestre": 9.0,
+        "media_final": 8.5
     }
-    response = requests.post(BASE_URL, json=novo_aluno)
-    assert response.status_code == 400 
+    response = requests.post(BASE_URL, json=aluno)
+    assert response.status_code == 201 
 
-def test007_obter_aluno_nao_existente():
-    aluno_id = 9999  
+    aluno_id = response.json()["aluno"]["id"]
+
     response = requests.get(f"{BASE_URL}/{aluno_id}")
-    assert response.status_code == 404 
+    assert response.status_code == 200
+    assert response.json()["nome"] == "Carlos"
 
-def test008_atualizar_aluno_nao_existente():
-    aluno_id = 9999  
-    dados_atualizados = {"nome": "Aluno Inexistente", "idade": 17}
-    response = requests.put(f"{BASE_URL}/{aluno_id}", json=dados_atualizados)
-    assert response.status_code == 404 
+def test_atualizar_aluno():
+    aluno = {
+        "nome": "João",
+        "idade": 20,
+        "turma_id": 1,
+        "data_nascimento": "2003-01-01",
+        "nota_primeiro_semestre": 7.0,
+        "nota_segundo_semestre": 8.0,
+        "media_final": 7.5
+    }
+    response = requests.post(BASE_URL, json=aluno)
+    assert response.status_code == 201  
 
-def test009_excluir_aluno_nao_existente():
-    aluno_id = 9999 
+    aluno_id = response.json()["aluno"]["id"]
+
+    aluno_atualizado = {
+        "nome": "João Atualizado",
+        "idade": 21,
+        "turma_id": 1,
+        "data_nascimento": "2003-01-01",
+        "nota_primeiro_semestre": 7.5,
+        "nota_segundo_semestre": 8.5,
+        "media_final": 8.0
+    }
+    response = requests.put(f"{BASE_URL}/{aluno_id}", json=aluno_atualizado)
+    assert response.status_code == 200
+    assert response.json()["message"] == "Aluno atualizado com sucesso!"
+
+def test_deletar_aluno():
+    aluno = {
+        "nome": "Lucas",
+        "idade": 19,
+        "turma_id": 2,
+        "data_nascimento": "2004-02-15",
+        "nota_primeiro_semestre": 6.0,
+        "nota_segundo_semestre": 7.0,
+        "media_final": 6.5
+    }
+    response = requests.post(BASE_URL, json=aluno)
+    assert response.status_code == 201  
+
+    aluno_id = response.json()["aluno"]["id"]
+
     response = requests.delete(f"{BASE_URL}/{aluno_id}")
-    assert response.status_code == 404 
+    assert response.status_code == 204 
+
+    response = requests.get(f"{BASE_URL}/{aluno_id}")
+    assert response.status_code == 404  

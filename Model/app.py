@@ -77,7 +77,7 @@ def delete_aluno(aluno_id):
     global alunos
     aluno = next((a for a in alunos if a["id"] == aluno_id), None)
     if not aluno:
-        return jsonify({"message": "Aluno não encontrado."}), 404
+        return jsonify({"message": "Aluno não encontrado."}), 200
     alunos.remove(aluno)
     return jsonify({"message": "Aluno deletado com sucesso!"}), 200
 

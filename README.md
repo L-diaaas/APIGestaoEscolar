@@ -30,7 +30,7 @@ APIGestaoEscolar/
 │   ├── namespace/
 │       ├── alunos_namespace.py
 │       ├── professores_namespace.py
-│       └──  turmas_namespace.py
+│       └── turmas_namespace.py
 │   ├── __init__.py
 │   └── swagger_config.py
 ├── testes/

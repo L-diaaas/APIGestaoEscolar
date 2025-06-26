@@ -38,10 +38,10 @@ APIGestaoEscolar/
 │   ├── testes_professores.py
 │   ├── testes_turmas.py
 │   └── testes_alunos_turmas_professores.py
+├── README.md
 ├── app.py      # Arquivo principal
 ├── config.py   # Configurações da aplicação
 ├── dockerfile  # Dockerfile para containerização
-├── README.md
 └── requirements.txt    # Dependências do projeto
 ```
 
